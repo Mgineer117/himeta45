@@ -18,7 +18,7 @@ def get_args():
                         help='additional algo-name for logging')
     parser.add_argument('--log-interval', type=int, default=1, 
                         help='logging interval; epoch-based')
-    parser.add_argument('--seeds', type=list_of_ints, default = [1, 3, 5, 7, 9], required=True,  
+    parser.add_argument('--seeds', type=list_of_ints, default = [1, 3, 5, 7, 9],
                         help='--seeds 1,3,5,7,9 # without space')
 
     '''OpenAI Gym parameters'''
