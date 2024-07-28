@@ -6,7 +6,7 @@ def list_of_ints(arg):
 def get_args():
     parser = argparse.ArgumentParser()
     '''WandB and Logging parameters'''
-    parser.add_argument("--project", type=str, default="hmrl", 
+    parser.add_argument("--project", type=str, default="hmrl45", 
                         help='WandB project classification')
     parser.add_argument("--logdir", type=str, default="log", 
                         help='name of the logging folder')
