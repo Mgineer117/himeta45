@@ -203,7 +203,7 @@ class HiMeta(nn.Module):
         mdp_tuple = self.normalization(mdp_tuple, update=False)
 
         boolean = (actions * zs) >= 0
-        boolean = np.mean(np.array(boolean).astype(int), axis=-1)
+        boolean = np.mean(np.array(boolean).astype(int), axis=-1, keepdims=True)
         rewards = rewards + self.reward_bonus * rewards * boolean 
         
         (states, actions, next_states, rewards, masks) = mdp_tuple
