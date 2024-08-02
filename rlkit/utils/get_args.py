@@ -116,7 +116,7 @@ def get_args():
                         help='max deviation clamping for z as e^sig_min ~= 0.6 and e^sig_max ~= 1.6')
     
     '''Sampling parameters'''
-    parser.add_argument('--epoch', type=int, default=75, 
+    parser.add_argument('--epoch', type=int, default=76, 
                         help='total number of epochs; every epoch it does evaluation')
     parser.add_argument('--init-epoch', type=int, default=0, 
                         help='useful when to resume the previous model training')
