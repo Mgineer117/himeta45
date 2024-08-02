@@ -277,7 +277,7 @@ class HiMeta(nn.Module):
     def learn_him(self):
         from rlkit.utils.torch import estimate_advantages, estimate_episodic_value
 
-        vae_batch = self.buffer.sample(30)
+        vae_batch = self.buffer.sample(45)
         vae_batch = self.to_tensor(vae_batch)
         
         states, actions, next_states, rewards, masks = \

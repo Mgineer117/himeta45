@@ -45,13 +45,13 @@ def get_args():
     parser.add_argument('--reward-embed-hidden-dims', type=tuple, default=(16,))
 
     # Learning rates
-    parser.add_argument("--actor-lr", type=float, default=3e-4, 
+    parser.add_argument("--actor-lr", type=float, default=5e-4, 
                         help='PPO-actor learning rate')
-    parser.add_argument("--critic-lr", type=float, default=5e-4,
+    parser.add_argument("--critic-lr", type=float, default=7e-4,
                         help='PPO-critic learning rate')
-    parser.add_argument("--IL-lr", type=float, default=5e-4, 
+    parser.add_argument("--IL-lr", type=float, default=7e-4, 
                         help='Intermediate-level model learning rate')
-    parser.add_argument("--HL-lr", type=float, default=5e-4, 
+    parser.add_argument("--HL-lr", type=float, default=7e-4, 
                         help='High-level model learning rate')
     # PPO parameters
     parser.add_argument("--K-epochs", type=int, default=5, 
@@ -79,9 +79,9 @@ def get_args():
                             It yields penalty as the network wants to use wider range of labels.')
     parser.add_argument("--embed-dim", type=int, default=5, 
                         help='embedding dimension both for categorical network and VAE')
-    parser.add_argument("--goal-type", type=str, default='task_subgoal', 
+    parser.add_argument("--goal-type", type=str, default='n_step_forward', 
                         help='task_subgoal, n_step_forward, fix_by_time')
-    parser.add_argument("--forecast-steps", type=int, default=5, 
+    parser.add_argument("--forecast-steps", type=int, default=3, 
                         help='How many discrete time steps to forecast; to discover the subgoal that is to be this amount ahead')
     parser.add_argument("--mask-type", type=str, default='ego', 
                         help='whether to use masking in VAE; either of "ego" or "none" \
@@ -98,9 +98,9 @@ def get_args():
                         help='used for categorical network and decoder in HL and IL model respectively.')
     parser.add_argument("--value-coeff", type=float, default=20.0, 
                         help='used for categorical network and decoder in HL and IL model respectively.')
-    parser.add_argument("--num-traj", type=int, default=5000, 
+    parser.add_argument("--num-traj", type=int, default=4500, 
                         help='embedding dimension both for categorical network and VAE')
-    parser.add_argument("--num-him-updates", type=int, default=30, 
+    parser.add_argument("--num-him-updates", type=int, default=20, 
                         help='embedding dimension both for categorical network and VAE')
     parser.add_argument("--reward-bonus", type=float, default=1.0, 
                         help='used for categorical network and decoder in HL and IL model respectively.')
