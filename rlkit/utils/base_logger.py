@@ -9,6 +9,7 @@ from typing import Callable, Iterable, Optional, Union
 
 import numpy as np
 import torch
+import csv
 import yaml
 
 from rlkit.utils.logger_util import RunningAverage, colorize, convert_json
@@ -44,13 +45,7 @@ class BaseLogger(ABC):
                 os.makedirs(self.checkpoint_dir)
                 
             if log_txt:
-                self.output_file = open(osp.join(self.log_dir, self.log_fname), 'w')
-                atexit.register(self.output_file.close)
-                print(
-                    colorize(
-                        "Logging data to %s" % self.output_file.name, 'green', True
-                    )
-                )
+                self.csv_file = os.path.join(self.log_dir, 'output.csv')
         else:
             self.output_file = None
         self.first_row = True
@@ -89,6 +84,7 @@ class BaseLogger(ABC):
     def write(
         self,
         step: int,
+        eval_log: bool,
         display: bool = False,
         display_keys: Iterable[str] = None
     ) -> None:
@@ -102,13 +98,21 @@ class BaseLogger(ABC):
         if "update/env_step" not in self.logger_keys:
             self.store(tab="update", env_step=step)
         # save .txt file to the output logger
-        if self.output_file is not None:
+        if self.csv_file is not None and eval_log:
             if self.first_row:
                 keys = ["Steps"] + list(self.logger_keys)
-                self.output_file.write("\t".join(keys) + "\n")
+                with open(self.csv_file, mode='w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(keys)  # Adding headers
+                
+                #self.output_file.write("\t".join(keys) + "\n")
             vals = [step] + self.get_mean_list(self.logger_keys)
-            self.output_file.write("\t".join(map(str, vals)) + "\n")
-            self.output_file.flush()
+            with open(self.csv_file, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(map(str, vals))  # Adding headers
+
+            #self.output_file.write("\t".join(map(str, vals)) + "\n")
+            #self.output_file.flush()
             self.first_row = False
         if display:
             self.display_tabular(display_keys=display_keys)

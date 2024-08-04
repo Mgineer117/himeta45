@@ -51,6 +51,7 @@ class WandbLogger(BaseLogger):
     def write(
         self,
         step: int,
+        eval_log: bool = False,
         display: bool = True,
         display_keys: Iterable[str] = None
     ) -> None:
@@ -63,7 +64,7 @@ class WandbLogger(BaseLogger):
         """
         self.store(tab="update", env_step=step)
         self.write_without_reset(step)
-        return super().write(step, display, display_keys)
+        return super().write(step, eval_log, display, display_keys)
 
     def write_without_reset(self, step: int) -> None:
         """Sending data to wandb without resetting the current stored stats."""

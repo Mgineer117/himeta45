@@ -1,48 +1,44 @@
-import torch
+import csv
 
-class ElevatedSumCalculator:
-    def find_elevated_sum(self, actions, y, masks):
-        y = torch.argmax(y, dim=-1)
-        task_idx = (y[:-1] != y[1:]).nonzero(as_tuple=True)[0] + 1
-        mask_idx = torch.where(masks == 0)[0]
+# Example initial data
+data = {
+    'name': ['Alice', 'Bob', 'Charlie'],
+    'age': [25, 30, 35],
+    'city': ['New York', 'Los Angeles', 'Chicago']
+}
 
-        elevated_sum = torch.zeros_like(actions)
+# Define the CSV file name
+csv_file = 'output.csv'
 
-        prev_idx = 0
-        for m_idx in mask_idx:
-            boolean = torch.logical_and(task_idx >= prev_idx, task_idx <= m_idx)
-            if len(task_idx[boolean]) != 0:
-                for y_idx in task_idx[boolean]:
-                    elevated_sum[prev_idx] = actions[prev_idx]
-                    for t in range(prev_idx+1, y_idx + 1):
-                        elevated_sum[t] = elevated_sum[t - 1] + actions[t]
-                    prev_idx = y_idx + 1
+# Get the headers from the dictionary keys
+headers = data.keys()
 
-                elevated_sum[prev_idx] = actions[prev_idx]
-                for t in range(prev_idx+1, m_idx + 1):
-                    elevated_sum[t] = elevated_sum[t - 1] + actions[t]
-                prev_idx = m_idx + 1
-            else:
-                elevated_sum[prev_idx] = actions[prev_idx]
-                for t in range(prev_idx+1, m_idx + 1):
-                    elevated_sum[t] = elevated_sum[t - 1] + actions[t]
-                prev_idx = m_idx + 1
+# Write the title and headers once
+with open(csv_file, mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Title: Example CSV File'])  # Adding title
+    writer.writerow(headers)  # Adding headers
 
-        return elevated_sum
+# Simulate adding data for each epoch
+num_epochs = 3  # For example, 3 epochs
 
-# Define the input tensors
-n = 3
+for epoch in range(num_epochs):
+    # Update data (simulate new data for each epoch)
+    data = {
+        'name': [f'Alice_{epoch}', f'Bob_{epoch}', f'Charlie_{epoch}'],
+        'age': [25 + epoch, 30 + epoch, 35 + epoch],
+        'city': [f'New York_{epoch}', f'Los Angeles_{epoch}', f'Chicago_{epoch}']
+    }
+    
+    # Open the CSV file in append mode
+    with open(csv_file, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        
+        # Write the data rows iteratively
+        for i in range(len(data['name'])):
+            row = [data[key][i] for key in headers]
+            writer.writerow(row)
+    
+    print(f'Data for epoch {epoch + 1} written to {csv_file} successfully.')
 
-# Generate actions tensor such that each row has increasing values
-actions = torch.tensor([[i + 1] * 4 for i in range(1000)], dtype=torch.float32)
-
-# Define y and masks based on the given pattern
-y = torch.tensor([3, 5, 10, 160, 320, 480, 660, 820, 980] , dtype=torch.int32).unsqueeze(1)
-masks = torch.tensor([499, 998], dtype=torch.int32)
-
-# Initialize the calculator and compute the elevated sum
-calculator = ElevatedSumCalculator()
-result = calculator.find_elevated_sum(actions, y, masks)
-
-# Print the result
-print(result)
+print(f'All data written to {csv_file} successfully.')

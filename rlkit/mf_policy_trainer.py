@@ -208,7 +208,7 @@ class MFPolicyTrainer:
 
         # eval logging
         self.logger.store(**eval_dict)        
-        self.logger.write(int(e*self._step_per_epoch), display=False)
+        self.logger.write(int(e*self._step_per_epoch), eval_log = True, display=False)
         for key, value in eval_dict.items():
             self.writer.add_scalar(key, value, int(e*self._step_per_epoch))
         
